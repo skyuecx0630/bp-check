@@ -1,0 +1,628 @@
+{
+  "ALB": {
+    "enabled": true,
+    "rules": {
+      "alb-http-drop-invalid-header-enabled": {
+        "enabled": true,
+        "level": 2
+      },
+      "alb-waf-enabled": {
+        "enabled": true,
+        "level": 2
+      },
+      "elb-cross-zone-load-balancing-enabled": {
+        "enabled": true,
+        "level": 2
+      },
+      "elb-deletion-protection-enabled": {
+        "enabled": true,
+        "level": 1
+      },
+      "elb-logging-enabled": {
+        "enabled": true,
+        "level": 2
+      }
+    }
+  },
+  "API GW": {
+    "enabled": true,
+    "rules": {
+      "api-gwv2-access-logs-enabled": {
+        "enabled": true,
+        "level": 2
+      },
+      "api-gwv2-authorization-type-configured": {
+        "enabled": true,
+        "level": 1
+      },
+      "api-gw-associated-with-waf": {
+        "enabled": true,
+        "level": 2
+      },
+      "api-gw-cache-enabled-and-encrypted": {
+        "enabled": true,
+        "level": 2
+      },
+      "api-gw-execution-logging-enabled": {
+        "enabled": true,
+        "level": 2
+      },
+      "api-gw-xray-enabled": {
+        "enabled": true,
+        "level": 1
+      }
+    }
+  },
+  "RDS": {
+    "enabled": true,
+    "rules": {
+      "aurora-last-backup-recovery-point-created": {
+        "enabled": true,
+        "level": 2
+      },
+      "aurora-mysql-backtracking-enabled": {
+        "enabled": true,
+        "level": 2
+      },
+      "db-instance-backup-enabled": {
+        "enabled": true,
+        "level": 2
+      },
+      "rds-cluster-auto-minor-version-upgrade-enable": {
+        "enabled": true,
+        "level": 2
+      },
+      "rds-cluster-default-admin-check": {
+        "enabled": true,
+        "level": 2
+      },
+      "rds-cluster-deletion-protection-enabled": {
+        "enabled": true,
+        "level": 1
+      },
+      "rds-cluster-encrypted-at-rest": {
+        "enabled": true,
+        "level": 2
+      },
+      "rds-cluster-iam-authentication-enabled": {
+        "enabled": true,
+        "level": 2
+      },
+      "rds-cluster-multi-az-enabled": {
+        "enabled": true,
+        "level": 2
+      },
+      "rds-db-security-group-not-allowed": {
+        "enabled": true,
+        "level": 2
+      },
+      "rds-enhanced-monitoring-enabled": {
+        "enabled": true,
+        "level": 2
+      },
+      "rds-instance-deletion-protection-enabled": {
+        "enabled": true,
+        "level": 1
+      },
+      "rds-instance-public-access-check": {
+        "enabled": true,
+        "level": 2
+      },
+      "rds-logging-enabled": {
+        "enabled": true,
+        "level": 2
+      },
+      "rds-snapshot-encrypted": {
+        "enabled": true,
+        "level": 2
+      }
+    }
+  },
+  "ASG": {
+    "enabled": true,
+    "rules": {
+      "autoscaling-group-elb-healthcheck-required": {
+        "enabled": true,
+        "level": 2
+      },
+      "autoscaling-multiple-az": {
+        "enabled": true,
+        "level": 2
+      }
+    }
+  },
+  "EC2": {
+    "enabled": true,
+    "rules": {
+      "autoscaling-launch-template": {
+        "enabled": true,
+        "level": 2
+      },
+      "ec2-ebs-encryption-by-default": {
+        "enabled": true,
+        "level": 2
+      },
+      "ec2-imdsv2-check": {
+        "enabled": true,
+        "level": 2
+      },
+      "ec2-instance-detailed-monitoring-enabled": {
+        "enabled": true,
+        "level": 2
+      },
+      "ec2-instance-managed-by-systems-manager": {
+        "enabled": true,
+        "level": 2
+      },
+      "ec2-instance-profile-attached": {
+        "enabled": true,
+        "level": 2
+      },
+      "ec2-no-amazon-key-pair": {
+        "enabled": true,
+        "level": 1
+      },
+      "ec2-stopped-instance": {
+        "enabled": true,
+        "level": 2
+      },
+      "ec2-token-hop-limit-check": {
+        "enabled": true,
+        "level": 2
+      }
+    }
+  },
+  "CloudFront": {
+    "enabled": true,
+    "rules": {
+      "cloudfront-accesslogs-enabled": {
+        "enabled": true,
+        "level": 2
+      },
+      "cloudfront-associated-with-waf": {
+        "enabled": true,
+        "level": 2
+      },
+      "cloudfront-default-root-object-configured": {
+        "enabled": true,
+        "level": 2
+      },
+      "cloudfront-no-deprecated-ssl-protocols": {
+        "enabled": true,
+        "level": 2
+      },
+      "cloudfront-s3-origin-access-control-enabled": {
+        "enabled": true,
+        "level": 2
+      },
+      "cloudfront-viewer-policy-https": {
+        "enabled": true,
+        "level": 2
+      }
+    }
+  },
+  "KMS": {
+    "enabled": true,
+    "rules": {
+      "cmk-backing-key-rotation-enabled": {
+        "enabled": true,
+        "level": 2
+      }
+    }
+  },
+  "CodeSeries": {
+    "enabled": true,
+    "rules": {
+      "codebuild-project-environment-privileged-check": {
+        "enabled": true,
+        "level": 1
+      },
+      "codebuild-project-logging-enabled": {
+        "enabled": true,
+        "level": 2
+      },
+      "codedeploy-auto-rollback-monitor-enabled": {
+        "enabled": true,
+        "level": 2
+      }
+    }
+  },
+  "CloudWatch": {
+    "enabled": true,
+    "rules": {
+      "cw-loggroup-retention-period-check": {
+        "enabled": true,
+        "level": 2
+      },
+      "cloudwatch-alarm-settings-check": {
+        "enabled": true,
+        "level": 2
+      }
+    }
+  },
+  "DocDB": {
+    "enabled": true,
+    "rules": {
+      "docdb-cluster-audit-logging-enabled": {
+        "enabled": true,
+        "level": 2
+      },
+      "docdb-cluster-backup-retention-check": {
+        "enabled": true,
+        "level": 2
+      },
+      "docdb-cluster-deletion-protection-enabled": {
+        "enabled": true,
+        "level": 1
+      },
+      "docdb-cluster-encrypted": {
+        "enabled": true,
+        "level": 2
+      }
+    }
+  },
+  "DynamoDB": {
+    "enabled": true,
+    "rules": {
+      "dynamodb-autoscaling-enabled": {
+        "enabled": true,
+        "level": 2
+      },
+      "dynamodb-last-backup-recovery-point-created": {
+        "enabled": true,
+        "level": 2
+      },
+      "dynamodb-pitr-enabled": {
+        "enabled": true,
+        "level": 2
+      },
+      "dynamodb-table-deletion-protection-enabled": {
+        "enabled": true,
+        "level": 1
+      },
+      "dynamodb-table-encrypted-kms": {
+        "enabled": true,
+        "level": 2
+      },
+      "dynamodb-table-encryption-enabled": {
+        "enabled": true,
+        "level": 2
+      }
+    }
+  },
+  "ECR": {
+    "enabled": true,
+    "rules": {
+      "ecr-private-image-scanning-enabled": {
+        "enabled": true,
+        "level": 2
+      },
+      "ecr-private-lifecycle-policy-configured": {
+        "enabled": true,
+        "level": 2
+      },
+      "ecr-private-tag-immutability-enabled": {
+        "enabled": true,
+        "level": 2
+      },
+      "ecr-kms-encryption-1": {
+        "enabled": true,
+        "level": 2
+      }
+    }
+  },
+  "ECS": {
+    "enabled": true,
+    "rules": {
+      "ecs-awsvpc-networking-enabled": {
+        "enabled": true,
+        "level": 2
+      },
+      "ecs-containers-nonprivileged": {
+        "enabled": true,
+        "level": 2
+      },
+      "ecs-containers-readonly-access": {
+        "enabled": true,
+        "level": 2
+      },
+      "ecs-container-insights-enabled": {
+        "enabled": true,
+        "level": 2
+      },
+      "ecs-fargate-latest-platform-version": {
+        "enabled": true,
+        "level": 2
+      },
+      "ecs-task-definition-log-configuration": {
+        "enabled": true,
+        "level": 2
+      },
+      "ecs-task-definition-memory-hard-limit": {
+        "enabled": true,
+        "level": 1
+      },
+      "ecs-task-definition-nonroot-user": {
+        "enabled": true,
+        "level": 1
+      }
+    }
+  },
+  "EFS": {
+    "enabled": true,
+    "rules": {
+      "efs-access-point-enforce-root-directory": {
+        "enabled": true,
+        "level": 2
+      },
+      "efs-access-point-enforce-user-identity": {
+        "enabled": true,
+        "level": 2
+      },
+      "efs-automatic-backups-enabled": {
+        "enabled": true,
+        "level": 2
+      },
+      "efs-encrypted-check": {
+        "enabled": true,
+        "level": 2
+      },
+      "efs-mount-target-public-accessible": {
+        "enabled": true,
+        "level": 2
+      }
+    }
+  },
+  "EKS": {
+    "enabled": true,
+    "rules": {
+      "eks-cluster-logging-enabled": {
+        "enabled": true,
+        "level": 2
+      },
+      "eks-cluster-secrets-encrypted": {
+        "enabled": true,
+        "level": 2
+      },
+      "eks-endpoint-no-public-access": {
+        "enabled": true,
+        "level": 1
+      },
+      "eks-secrets-encrypted": {
+        "enabled": true,
+        "level": 2
+      }
+    }
+  },
+  "ElastiCache": {
+    "enabled": true,
+    "rules": {
+      "elasticache-auto-minor-version-upgrade-check": {
+        "enabled": true,
+        "level": 2
+      },
+      "elasticache-redis-cluster-automatic-backup-check": {
+        "enabled": true,
+        "level": 2
+      },
+      "elasticache-repl-grp-auto-failover-enabled": {
+        "enabled": true,
+        "level": 2
+      },
+      "elasticache-repl-grp-encrypted-at-rest": {
+        "enabled": true,
+        "level": 2
+      },
+      "elasticache-repl-grp-encrypted-in-transit": {
+        "enabled": true,
+        "level": 2
+      },
+      "elasticache-subnet-group-check": {
+        "enabled": true,
+        "level": 2
+      }
+    }
+  },
+  "IAM": {
+    "enabled": true,
+    "rules": {
+      "iam-policy-no-statements-with-admin-access": {
+        "enabled": true,
+        "level": 1
+      },
+      "iam-policy-no-statements-with-full-access": {
+        "enabled": true,
+        "level": 1
+      },
+      "iam-role-managed-policy-check": {
+        "enabled": true,
+        "level": 1
+      }
+    }
+  },
+  "Lambda": {
+    "enabled": true,
+    "rules": {
+      "lambda-dlq-check": {
+        "enabled": true,
+        "level": 1
+      },
+      "lambda-function-public-access-prohibited": {
+        "enabled": true,
+        "level": 2
+      },
+      "lambda-function-settings-check": {
+        "enabled": true,
+        "level": 2
+      },
+      "lambda-inside-vpc": {
+        "enabled": true,
+        "level": 1
+      }
+    }
+  },
+  "Tags": {
+    "enabled": true,
+    "rules": {
+      "required-tags": {
+        "enabled": true,
+        "level": 2
+      }
+    }
+  },
+  "Route53": {
+    "enabled": true,
+    "rules": {
+      "route53-query-logging-enabled": {
+        "enabled": true,
+        "level": 2
+      }
+    }
+  },
+  "S3": {
+    "enabled": true,
+    "rules": {
+      "s3-access-point-in-vpc-only": {
+        "enabled": true,
+        "level": 1
+      },
+      "s3-bucket-default-lock-enabled": {
+        "enabled": true,
+        "level": 1
+      },
+      "s3-bucket-level-public-access-prohibited": {
+        "enabled": true,
+        "level": 2
+      },
+      "s3-bucket-logging-enabled": {
+        "enabled": true,
+        "level": 1
+      },
+      "s3-bucket-ssl-requests-only": {
+        "enabled": true,
+        "level": 2
+      },
+      "s3-bucket-versioning-enabled": {
+        "enabled": true,
+        "level": 2
+      },
+      "s3-default-encryption-kms": {
+        "enabled": true,
+        "level": 2
+      },
+      "s3-event-notifications-enabled": {
+        "enabled": true,
+        "level": 1
+      },
+      "s3-last-backup-recovery-point-created": {
+        "enabled": true,
+        "level": 1
+      },
+      "s3-lifecycle-policy-check": {
+        "enabled": true,
+        "level": 2
+      }
+    }
+  },
+  "Secrets Manager": {
+    "enabled": true,
+    "rules": {
+      "secretsmanager-rotation-enabled-check": {
+        "enabled": true,
+        "level": 2
+      },
+      "secretsmanager-scheduled-rotation-success-check": {
+        "enabled": true,
+        "level": 1
+      },
+      "secretsmanager-secret-periodic-rotation": {
+        "enabled": true,
+        "level": 2
+      }
+    }
+  },
+  "Security Hub": {
+    "enabled": true,
+    "rules": {
+      "securityhub-enabled": {
+        "enabled": true,
+        "level": 1
+      }
+    }
+  },
+  "SNS": {
+    "enabled": true,
+    "rules": {
+      "sns-encrypted-kms": {
+        "enabled": true,
+        "level": 2
+      },
+      "sns-topic-message-delivery-notification-enabled": {
+        "enabled": true,
+        "level": 2
+      }
+    }
+  },
+  "VPC": {
+    "enabled": true,
+    "rules": {
+      "ec2-transit-gateway-auto-vpc-attach-disabled": {
+        "enabled": true,
+        "level": 1
+      },
+      "restricted-ssh": {
+        "enabled": true,
+        "level": 2
+      },
+      "restricted-common-ports": {
+        "enabled": true,
+        "level": 2
+      },
+      "subnet-auto-assign-public-ip-disabled": {
+        "enabled": true,
+        "level": 1
+      },
+      "vpc-default-security-group-closed": {
+        "enabled": true,
+        "level": 2
+      },
+      "vpc-flow-logs-enabled": {
+        "enabled": true,
+        "level": 2
+      },
+      "vpc-network-acl-unused-check": {
+        "enabled": true,
+        "level": 2
+      },
+      "vpc-peering-dns-resolution-check": {
+        "enabled": true,
+        "level": 2
+      },
+      "vpc-sg-open-only-to-authorized-ports": {
+        "enabled": true,
+        "level": 2
+      }
+    }
+  },
+  "WAFv2": {
+    "enabled": true,
+    "rules": {
+      "wafv2-logging-enabled": {
+        "enabled": true,
+        "level": 2
+      },
+      "wafv2-rulegroup-logging-enabled": {
+        "enabled": true,
+        "level": 2
+      },
+      "wafv2-rulegroup-not-empty": {
+        "enabled": true,
+        "level": 2
+      },
+      "wafv2-webacl-not-empty": {
+        "enabled": true,
+        "level": 2
+      }
+    }
+  }
+}
