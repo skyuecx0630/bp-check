@@ -109,7 +109,7 @@ def elb_logging_enabled():
         result = [
             attribute
             for attribute in filter(
-                lambda x: x['Key'] == "connection_logs.s3.enabled"
+                lambda x: x['Key'] == "access_logs.s3.enabled"
                 and x['Value'] == "true",
                 response['Attributes'],
             )
