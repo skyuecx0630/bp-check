@@ -387,10 +387,6 @@
       "eks-endpoint-no-public-access": {
         "enabled": true,
         "level": 1
-      },
-      "eks-secrets-encrypted": {
-        "enabled": true,
-        "level": 2
       }
     }
   },
