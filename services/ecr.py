@@ -36,8 +36,11 @@ def ecr_private_lifecycle_policy_configured():
                 repositoryName=repository["repositoryName"],
             )
             compliant_resource.append(repository["repositoryArn"])
-        except botocore.errorfactory.LifecyclePolicyNotFoundException:
-            non_compliant_resources.append(repository["repositoryArn"])
+        except Exception as e:
+            if e.__class__.__name__ == "LifecyclePolicyNotFoundException":
+                non_compliant_resources.append(repository["repositoryArn"])
+            else:
+                raise e
 
     return RuleCheckResult(
         passed=not non_compliant_resources,
