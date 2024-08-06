@@ -65,7 +65,7 @@ def elasticache_repl_grp_encrypted_at_rest():
     non_compliant_resources = []
 
     for replication_group in replication_groups:
-        if replication_group["TransitEncryptionEnabled"] == True:
+        if replication_group["AtRestEncryptionEnabled"] == True:
             compliant_resource.append(replication_group["ARN"])
         else:
             non_compliant_resources.append(replication_group["ARN"])
@@ -83,7 +83,7 @@ def elasticache_repl_grp_encrypted_in_transit():
     non_compliant_resources = []
 
     for replication_group in replication_groups:
-        if replication_group["AtRestEncryptionEnabled"] == True:
+        if replication_group["TransitEncryptionEnabled"] == True:
             compliant_resource.append(replication_group["ARN"])
         else:
             non_compliant_resources.append(replication_group["ARN"])
