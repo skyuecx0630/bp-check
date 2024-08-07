@@ -13,8 +13,7 @@ def lambda_dlq_check():
     functions = client.list_functions()["Functions"]
 
     for function in functions:
-        response = client.get_function(FunctionName=function["FunctionName"])["Configuration"]
-        if "DeadLetterConfig" in response:
+        if "DeadLetterConfig" in function:
             compliant_resource.append(function["FunctionArn"])
         else:
             non_compliant_resources.append(function["FunctionArn"])
@@ -58,15 +57,14 @@ def lambda_function_settings_check():
     non_compliant_resources = []
     functions = client.list_functions()["Functions"]
 
-    runtime = []  # python3.7 | nodejs10.x ...
+    default_timeout = 3
+    default_memory_size = 128
 
     for function in functions:
-        configuration = client.get_function(FunctionName=function["FunctionName"])["Configuration"]
-
-        if configuration["Runtime"] in runtime:
-            compliant_resource.append(function["FunctionArn"])
-        else:
+        if function["Timeout"] == default_timeout or function["MemorySize"] == default_memory_size:
             non_compliant_resources.append(function["FunctionArn"])
+        else:
+            compliant_resource.append(function["FunctionArn"])
 
     return RuleCheckResult(
         passed=not non_compliant_resources,
@@ -81,12 +79,10 @@ def lambda_inside_vpc():
     functions = client.list_functions()["Functions"]
 
     for function in functions:
-        response = client.get_function(FunctionName=function["FunctionName"])["Configuration"]
-
-        if "VpcConfig" in response:
-            compliant_resource.append(function["FunctionName"])
+        if "VpcConfig" in function:
+            compliant_resource.append(function["FunctionArn"])
         else:
-            non_compliant_resources.append(function["FunctionName"])
+            non_compliant_resources.append(function["FunctionArn"])
 
     return RuleCheckResult(
         passed=not non_compliant_resources,
