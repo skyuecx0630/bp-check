@@ -139,9 +139,9 @@ def ec2_no_amazon_key_pair():
             if instance["State"]["Name"] == "terminated":
                 continue
             if "KeyName" in instance:
-                compliant_resources.append(instance["InstanceId"])
-            else:
                 non_compliant_resources.append(instance["InstanceId"])
+            else:
+                compliant_resources.append(instance["InstanceId"])
 
     return RuleCheckResult(
         passed=not non_compliant_resources,
