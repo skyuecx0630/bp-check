@@ -15,10 +15,16 @@ def iam_policy_no_statements_with_admin_access():
             "PolicyVersion"
         ]
 
-        if "'Effect': 'Allow', 'Action': '*', 'Resource': '*'" not in str(policy_version["Document"]):
-            compliant_resource.append(policy["Arn"])
+        for statement in policy_version["Document"]["Statement"]:
+            if (
+                statement["Action"] == "*"
+                and statement["Resource"] == "*"
+                and statement["Effect"] == "Allow"
+            ):
+                non_compliant_resources.append(policy["Arn"])
+                break
         else:
-            non_compliant_resources.append(policy["Arn"])
+            compliant_resource.append(policy["Arn"])
 
     return RuleCheckResult(
         passed=not non_compliant_resources,
@@ -37,14 +43,16 @@ def iam_policy_no_statements_with_full_access():
             "PolicyVersion"
         ]
 
-        escape = False
         for statement in policy_version["Document"]["Statement"]:
-            for action in statement["Action"]:
-                if action.endswith(":*"):
-                    non_compliant_resources.append(policy["Arn"])
-                    escape = True
-                    break
-            if escape == True:
+            if statement["Effect"] == "Deny":
+                continue
+
+            if type(statement["Action"]) == str:
+                statement["Action"] = [statement["Action"]]
+
+            full_access_actions = [action for action in statement["Action"] if action.endswith(":*")]
+            if full_access_actions:
+                non_compliant_resources.append(policy["Arn"])
                 break
         else:
             compliant_resource.append(policy["Arn"])
