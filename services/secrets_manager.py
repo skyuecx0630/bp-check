@@ -13,7 +13,7 @@ def secretsmanager_rotation_enabled_check():
     secrets = client.list_secrets()["SecretList"]
 
     for secret in secrets:
-        if secret["RotationEnabled"] == True:
+        if secret.get("RotationEnabled") == True:
             compliant_resources.append(secret["ARN"])
         else:
             non_compliant_resources.append(secret["ARN"])
@@ -31,7 +31,11 @@ def secretsmanager_scheduled_rotation_success_check():
     secrets = client.list_secrets()["SecretList"]
 
     for secret in secrets:
-        if secret["RotationEnabled"] == True:
+        if secret.get("RotationEnabled") == True:
+            if 'LastRotatedDate' not in secret:
+                non_compliant_resources.append(secret["ARN"])
+                continue
+
             now = datetime.datetime.now(tz=tzlocal())
             rotation_period = datetime.timedelta(
                 days=secret["RotationRules"]["AutomaticallyAfterDays"] + 2
@@ -56,7 +60,11 @@ def secretsmanager_secret_periodic_rotation():
     secrets = client.list_secrets()["SecretList"]
 
     for secret in secrets:
-        if secret["RotationEnabled"] == True:
+        if secret.get("RotationEnabled") == True:
+            if 'LastRotatedDate' not in secret:
+                non_compliant_resources.append(secret["ARN"])
+                continue
+
             now = datetime.datetime.now(tz=tzlocal())
             elapsed_time_after_rotation = now - secret["LastRotatedDate"]
 
