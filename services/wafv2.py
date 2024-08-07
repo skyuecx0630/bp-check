@@ -4,7 +4,7 @@ import boto3
 
 client = boto3.client("wafv2", region_name="us-east-1")
 
-cloudfront_client = boto3.client("cloudfront")
+cloudfront_client = boto3.client("cloudfront", "us-east-1")
 
 
 def wafv2_logging_enabled():
