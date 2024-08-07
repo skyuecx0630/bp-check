@@ -1,5 +1,6 @@
 from models import RuleCheckResult
 import boto3
+import botocore.exceptions
 
 
 client = boto3.client("s3")
@@ -36,8 +37,8 @@ def s3_bucket_default_lock_enabled():
         try:
             response = client.get_object_lock_configuration(Bucket=bucket["Name"])
             compliant_resources.append(f"arn:aws:s3:::{bucket['Name']}")
-        except Exception as e:
-            if e.__class__.__name__ == "ObjectLockConfigurationNotFoundError":
+        except botocore.exceptions.ClientError as e:
+            if e.response['Error']['Code'] == "ObjectLockConfigurationNotFoundError":
                 non_compliant_resources.append(f"arn:aws:s3:::{bucket['Name']}")
             else:
                 raise e
@@ -197,8 +198,8 @@ def s3_lifecycle_policy_check():
         try:
             configuration = client.get_bucket_lifecycle_configuration(Bucket=bucket["Name"])
             compliant_resources.append(f"arn:aws:s3:::{bucket['Name']}")
-        except Exception as e:
-            if e.__class__.__name__ == "NoSuchLifecycleConfiguration":
+        except botocore.exceptions.ClientError as e:
+            if e.response['Error']['Code'] == "NoSuchLifecycleConfiguration":
                 non_compliant_resources.append(f"arn:aws:s3:::{bucket['Name']}")
             else:
                 raise e
