@@ -2,7 +2,7 @@ from models import RuleCheckResult
 import boto3
 
 
-client = boto3.client("wafv2")
+client = boto3.client("wafv2", region_name="us-east-1")
 
 cloudfront_client = boto3.client("cloudfront")
 
