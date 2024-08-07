@@ -13,10 +13,10 @@ def autoscaling_launch_template():
     asgs = autoscaling_client.describe_auto_scaling_groups()["AutoScalingGroups"]
 
     for asg in asgs:
-        if "LaunchTemplate" in asg["MixedInstancesPolicy"]:
-            compliant_resources.append(asg["AutoScalingGroupARN"])
-        else:
+        if "LaunchConfigurationName" in asg:
             non_compliant_resources.append(asg["AutoScalingGroupARN"])
+        else:
+            compliant_resources.append(asg["AutoScalingGroupARN"])
 
     return RuleCheckResult(
         passed=not non_compliant_resources,
