@@ -33,9 +33,7 @@ def cloudfront_associated_with_waf():
     distributions = client.list_distributions()["DistributionList"]["Items"]
 
     for distribution in distributions:
-        distribution = client.get_distribution(Id=distribution["Id"])["Distribution"]
-
-        if "WebACLId" in distribution["DistributionConfig"] and distribution["DistributionConfig"]["WebACLId"] != "":
+        if "WebACLId" in distribution and distribution["WebACLId"] != "":
             compliant_resources.append(distribution["ARN"])
         else:
             non_compliant_resources.append(distribution["ARN"])
@@ -73,11 +71,10 @@ def cloudfront_no_deprecated_ssl_protocols():
     distributions = client.list_distributions()["DistributionList"]["Items"]
 
     for distribution in distributions:
-        distribution = client.get_distribution(Id=distribution["Id"])["Distribution"]
-
-        for origin in distribution["DistributionConfig"]["Origins"]["Items"]:
+        for origin in distribution["Origins"]["Items"]:
             if (
                 "CustomOriginConfig" in origin
+                and origin["CustomOriginConfig"]["OriginProtocolPolicy"] in ["https-only", "match-viewer"]
                 and "SSLv3" in origin["CustomOriginConfig"]["OriginSslProtocols"]["Items"]
             ):
 
@@ -101,10 +98,10 @@ def cloudfront_s3_origin_access_control_enabled():
     for distribution in distributions["Items"]:
         for origin in distribution["Origins"]["Items"]:
             if "S3OriginConfig" in origin and origin["OriginAccessControlId"] == "":
-                non_compliant_resources.append(distribution["Id"])
+                non_compliant_resources.append(distribution["ARN"])
                 break
         else:
-            compliant_resources.append(distribution["Id"])
+            compliant_resources.append(distribution["ARN"])
 
     return RuleCheckResult(
         passed=not non_compliant_resources,
@@ -119,17 +116,20 @@ def cloudfront_viewer_policy_https():
     distributions = client.list_distributions()["DistributionList"]["Items"]
 
     for distribution in distributions:
-        distribution = client.get_distribution(Id=distribution["Id"])["Distribution"]
-
-        if distribution["DistributionConfig"]["DefaultCacheBehavior"]["ViewerProtocolPolicy"] != "allow-all":
-            for behavior in distribution["DistributionConfig"]["CacheBehaviors"]["Items"]:
-                if behavior["ViewerProtocolPolicy"] == "allow-all":
-                    non_compliant_resources.append(distribution["ARN"])
-                    break
-            else:
-                compliant_resources.append(distribution["ARN"])
-        else:
+        if distribution["DefaultCacheBehavior"]["ViewerProtocolPolicy"] == "allow-all":
             non_compliant_resources.append(distribution["ARN"])
+            continue
+
+        allow_alls = [
+            behavior
+            for behavior in distribution["CacheBehaviors"]["Items"]
+            if behavior["ViewerProtocolPolicy"] == "allow-all"
+        ]
+        if allow_alls:
+            non_compliant_resources.append(distribution["ARN"])
+            continue
+
+        compliant_resources.append(distribution["ARN"])
 
     return RuleCheckResult(
         passed=not non_compliant_resources,
