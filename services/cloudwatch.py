@@ -11,11 +11,13 @@ def cw_loggroup_retention_period_check():
     non_compliant_resources = []
     log_groups = logs_client.describe_log_groups()["logGroups"]
 
+    # This rule should check if `retentionInDays` is less than n days.
+    # But, instead of that, this will check if the retention setting is set to "Never expire" or not
     for log_group in log_groups:
-        if "retentionInDays" in log_group and log_group["retentionInDays"] < 365:
-            non_compliant_resources.append(log_group["logGroupArn"])
-        else:
+        if "retentionInDays" in log_group:
             compliant_resources.append(log_group["logGroupArn"])
+        else:
+            non_compliant_resources.append(log_group["logGroupArn"])
 
     return RuleCheckResult(
         passed=not non_compliant_resources,
