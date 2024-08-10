@@ -8,7 +8,6 @@ from . import (
     kms,
     codeseries,
     cloudwatch,
-    docdb,
     dynamodb,
     ecr,
     ecs,

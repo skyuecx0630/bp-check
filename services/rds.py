@@ -217,24 +217,6 @@ def rds_enhanced_monitoring_enabled():
     )
 
 
-def rds_instance_deletion_protection_enabled():
-    compliant_resources = []
-    non_compliant_resources = []
-    instances = client.describe_db_instances()["DBInstances"]
-
-    for instance in instances:
-        if instance.get("DeletionProtection", False) != False:
-            compliant_resources.append(instance["DBInstanceArn"])
-        else:
-            non_compliant_resources.append(instance["DBInstanceArn"])
-
-    return RuleCheckResult(
-        passed=not non_compliant_resources,
-        compliant_resources=compliant_resources,
-        non_compliant_resources=non_compliant_resources,
-    )
-
-
 def rds_instance_public_access_check():
     compliant_resources = []
     non_compliant_resources = []
