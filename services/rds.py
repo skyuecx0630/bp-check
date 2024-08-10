@@ -54,7 +54,7 @@ def db_instance_backup_enabled():
     clusters = client.describe_db_clusters()["DBClusters"]
 
     for cluster in clusters:
-        if cluster.get("BackupRetentionPeriod", None) != None:
+        if "BackupRetentionPeriod" in cluster:
             compliant_resources.append(cluster["DBClusterArn"])
         else:
             non_compliant_resources.append(cluster["DBClusterArn"])
@@ -90,7 +90,7 @@ def rds_cluster_default_admin_check():
     clusters = client.describe_db_clusters()["DBClusters"]
 
     for cluster in clusters:
-        if cluster.get("MasterUsername", None) not in ["admin", "postgres"]:
+        if cluster["MasterUsername"] not in ["admin", "postgres"]:
             compliant_resources.append(cluster["DBClusterArn"])
         else:
             non_compliant_resources.append(cluster["DBClusterArn"])
@@ -108,7 +108,7 @@ def rds_cluster_deletion_protection_enabled():
     clusters = client.describe_db_clusters()["DBClusters"]
 
     for cluster in clusters:
-        if cluster.get("DeletionProtection", None) == True:
+        if cluster["DeletionProtection"]:
             compliant_resources.append(cluster["DBClusterArn"])
         else:
             non_compliant_resources.append(cluster["DBClusterArn"])
@@ -126,7 +126,7 @@ def rds_cluster_encrypted_at_rest():
     clusters = client.describe_db_clusters()["DBClusters"]
 
     for cluster in clusters:
-        if cluster.get("StorageEncrypted", None) == True:
+        if cluster["StorageEncrypted"]:
             compliant_resources.append(cluster["DBClusterArn"])
         else:
             non_compliant_resources.append(cluster["DBClusterArn"])
@@ -205,7 +205,7 @@ def rds_enhanced_monitoring_enabled():
     instances = client.describe_db_instances()["DBInstances"]
 
     for instance in instances:
-        if instance.get("MonitoringInterval", 0) != 0:
+        if instance.get("MonitoringInterval", 0):
             compliant_resources.append(instance["DBInstanceArn"])
         else:
             non_compliant_resources.append(instance["DBInstanceArn"])
@@ -241,10 +241,10 @@ def rds_instance_public_access_check():
     instances = client.describe_db_instances()["DBInstances"]
 
     for instance in instances:
-        if instance.get("PubliclyAccessible") == False:
-            compliant_resources.append(instance["DBInstanceArn"])
-        else:
+        if instance["PubliclyAccessible"]:
             non_compliant_resources.append(instance["DBInstanceArn"])
+        else:
+            compliant_resources.append(instance["DBInstanceArn"])
 
     return RuleCheckResult(
         passed=not non_compliant_resources,
