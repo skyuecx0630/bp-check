@@ -72,7 +72,7 @@ def rds_cluster_auto_minor_version_upgrade_enable():
     clusters = client.describe_db_clusters()["DBClusters"]
 
     for cluster in clusters:
-        if cluster.get("AutoMinorVersionUpgrade", None) == True:
+        if cluster["Engine"] == "docdb" or cluster.get("AutoMinorVersionUpgrade"):
             compliant_resources.append(cluster["DBClusterArn"])
         else:
             non_compliant_resources.append(cluster["DBClusterArn"])
@@ -144,7 +144,7 @@ def rds_cluster_iam_authentication_enabled():
     clusters = client.describe_db_clusters()["DBClusters"]
 
     for cluster in clusters:
-        if cluster.get("IAMDatabaseAuthenticationEnabled", None) == True:
+        if cluster["Engine"] == "docdb" or cluster.get("IAMDatabaseAuthenticationEnabled"):
             compliant_resources.append(cluster["DBClusterArn"])
         else:
             non_compliant_resources.append(cluster["DBClusterArn"])
@@ -258,8 +258,14 @@ def rds_logging_enabled():
     non_compliant_resources = []
     clusters = client.describe_db_clusters()["DBClusters"]
 
+    logs_for_engine = {
+        "aurora-mysql": ["audit", "error", "general", "slowquery"],
+        "aurora-postgresql": ["postgresql"],
+        "docdb": ["audit", "profiler"]
+    }
+
     for cluster in clusters:
-        if sorted(cluster["EnabledCloudwatchLogsExports"]) == ["audit", "error", "general", "slowquery"]:
+        if sorted(cluster["EnabledCloudwatchLogsExports"]) == logs_for_engine.get(cluster["Engine"]):
             compliant_resources.append(cluster["DBClusterArn"])
         else:
             non_compliant_resources.append(cluster["DBClusterArn"])
