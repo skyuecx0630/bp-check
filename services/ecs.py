@@ -12,11 +12,11 @@ def ecs_awsvpc_networking_enabled():
     latest_task_definitions = {}
 
     for task_definition in task_definitions:
-        if latest_task_definitions.get(task_definition.rsplit(":", 1)[0], 0) < int(task_definition.rsplit(":", 1)[1]):
-            latest_task_definitions[task_definition.rsplit(":", 1)[0]] = int(task_definition.rsplit(":", 1)[1])
+        family, revision = task_definition.rsplit(":", 1)        
+        latest_task_definitions[family] = max(latest_task_definitions.get(family, 0), int(revision))
 
-    for task_definition in latest_task_definitions.keys():
-        task_definition_arn = f"{task_definition}:{latest_task_definitions[task_definition]}"
+    for family, revision in latest_task_definitions.items():
+        task_definition_arn = f"{family}:{revision}"
         task_definition = client.describe_task_definition(taskDefinition=task_definition_arn)["taskDefinition"]
 
         if task_definition.get("networkMode") == "awsvpc":
@@ -38,16 +38,16 @@ def ecs_containers_nonprivileged():
     latest_task_definitions = {}
 
     for task_definition in task_definitions:
-        if latest_task_definitions.get(task_definition.rsplit(":", 1)[0], 0) < int(task_definition.rsplit(":", 1)[1]):
-            latest_task_definitions[task_definition.rsplit(":", 1)[0]] = int(task_definition.rsplit(":", 1)[1])
+        family, revision = task_definition.rsplit(":", 1)        
+        latest_task_definitions[family] = max(latest_task_definitions.get(family, 0), int(revision))
 
-    for task_definition in latest_task_definitions.keys():
-        task_definition_arn = f"{task_definition}:{latest_task_definitions[task_definition]}"
+    for family, revision in latest_task_definitions.items():
+        task_definition_arn = f"{family}:{revision}"
         task_definition = client.describe_task_definition(taskDefinition=task_definition_arn)["taskDefinition"]
         containers = task_definition["containerDefinitions"]
 
         for container in containers:
-            if container.get("privileged") == True:
+            if container.get("privileged"):
                 non_compliant_resources.append(task_definition["taskDefinitionArn"])
                 break
         else:
@@ -67,11 +67,11 @@ def ecs_containers_readonly_access():
     latest_task_definitions = {}
 
     for task_definition in task_definitions:
-        if latest_task_definitions.get(task_definition.rsplit(":", 1)[0], 0) < int(task_definition.rsplit(":", 1)[1]):
-            latest_task_definitions[task_definition.rsplit(":", 1)[0]] = int(task_definition.rsplit(":", 1)[1])
+        family, revision = task_definition.rsplit(":", 1)        
+        latest_task_definitions[family] = max(latest_task_definitions.get(family, 0), int(revision))
 
-    for task_definition in latest_task_definitions.keys():
-        task_definition_arn = f"{task_definition}:{latest_task_definitions[task_definition]}"
+    for family, revision in latest_task_definitions.items():
+        task_definition_arn = f"{family}:{revision}"
         task_definition = client.describe_task_definition(taskDefinition=task_definition_arn)["taskDefinition"]
         containers = task_definition["containerDefinitions"]
 
@@ -147,16 +147,16 @@ def ecs_task_definition_log_configuration():
     latest_task_definitions = {}
 
     for task_definition in task_definitions:
-        if latest_task_definitions.get(task_definition.rsplit(":", 1)[0], 0) < int(task_definition.rsplit(":", 1)[1]):
-            latest_task_definitions[task_definition.rsplit(":", 1)[0]] = int(task_definition.rsplit(":", 1)[1])
+        family, revision = task_definition.rsplit(":", 1)        
+        latest_task_definitions[family] = max(latest_task_definitions.get(family, 0), int(revision))
 
-    for task_definition in latest_task_definitions.keys():
-        task_definition_arn = f"{task_definition}:{latest_task_definitions[task_definition]}"
+    for family, revision in latest_task_definitions.items():
+        task_definition_arn = f"{family}:{revision}"
         task_definition = client.describe_task_definition(taskDefinition=task_definition_arn)["taskDefinition"]
         containers = task_definition["containerDefinitions"]
 
         for container in containers:
-            if container.get("logConfiguration") == None:
+            if "logConfiguration" not in container:
                 non_compliant_resources.append(task_definition["taskDefinitionArn"])
                 break
         else:
@@ -176,16 +176,16 @@ def ecs_task_definition_memory_hard_limit():
     latest_task_definitions = {}
 
     for task_definition in task_definitions:
-        if latest_task_definitions.get(task_definition.rsplit(":", 1)[0], 0) < int(task_definition.rsplit(":", 1)[1]):
-            latest_task_definitions[task_definition.rsplit(":", 1)[0]] = int(task_definition.rsplit(":", 1)[1])
+        family, revision = task_definition.rsplit(":", 1)        
+        latest_task_definitions[family] = max(latest_task_definitions.get(family, 0), int(revision))
 
-    for task_definition in latest_task_definitions.keys():
-        task_definition_arn = f"{task_definition}:{latest_task_definitions[task_definition]}"
+    for family, revision in latest_task_definitions.items():
+        task_definition_arn = f"{family}:{revision}"
         task_definition = client.describe_task_definition(taskDefinition=task_definition_arn)["taskDefinition"]
         containers = task_definition["containerDefinitions"]
 
         for container in containers:
-            if container.get("memory") == None:
+            if "memory" not in container:
                 non_compliant_resources.append(task_definition["taskDefinitionArn"])
                 break
         else:
@@ -205,11 +205,11 @@ def ecs_task_definition_nonroot_user():
     latest_task_definitions = {}
 
     for task_definition in task_definitions:
-        if latest_task_definitions.get(task_definition.rsplit(":", 1)[0], 0) < int(task_definition.rsplit(":", 1)[1]):
-            latest_task_definitions[task_definition.rsplit(":", 1)[0]] = int(task_definition.rsplit(":", 1)[1])
+        family, revision = task_definition.rsplit(":", 1)        
+        latest_task_definitions[family] = max(latest_task_definitions.get(family, 0), int(revision))
 
-    for task_definition in latest_task_definitions.keys():
-        task_definition_arn = f"{task_definition}:{latest_task_definitions[task_definition]}"
+    for family, revision in latest_task_definitions.items():
+        task_definition_arn = f"{family}:{revision}"
         task_definition = client.describe_task_definition(taskDefinition=task_definition_arn)["taskDefinition"]
         containers = task_definition["containerDefinitions"]
 
