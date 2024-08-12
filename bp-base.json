@@ -100,10 +100,6 @@
         "enabled": true,
         "level": 2
       },
-      "rds-instance-deletion-protection-enabled": {
-        "enabled": true,
-        "level": 1
-      },
       "rds-instance-public-access-check": {
         "enabled": true,
         "level": 2
@@ -235,27 +231,6 @@
         "level": 2
       },
       "cloudwatch-alarm-settings-check": {
-        "enabled": true,
-        "level": 2
-      }
-    }
-  },
-  "DocDB": {
-    "enabled": true,
-    "rules": {
-      "docdb-cluster-audit-logging-enabled": {
-        "enabled": true,
-        "level": 2
-      },
-      "docdb-cluster-backup-retention-check": {
-        "enabled": true,
-        "level": 2
-      },
-      "docdb-cluster-deletion-protection-enabled": {
-        "enabled": true,
-        "level": 1
-      },
-      "docdb-cluster-encrypted": {
         "enabled": true,
         "level": 2
       }
