@@ -1,39 +1,33 @@
-import json
-from pprint import pprint
-
-from PyInquirer import prompt, style_from_dict, Token
+from InquirerLib import prompt
+from InquirerLib.InquirerPy.utils import InquirerPyKeybindings
+from InquirerLib.InquirerPy.base import Choice
 from colorama import Style, Fore
 
 from utils import *
 import services
 
-custom_style_2 = style_from_dict(
-    {
-        Token.Separator: "#6C6C6C",
-        Token.QuestionMark: "#FF9D00 bold",
-        # Token.Selected: '',  # default
-        Token.Selected: "#5F819D",
-        Token.Pointer: "#FF9D00 bold",
-        Token.Instruction: "",  # default
-        Token.Answer: "#5F819D bold",
-        Token.Question: "",
-    }
-)
+
+prompt_key_bindings: InquirerPyKeybindings = {
+    "toggle-all-true": [{"key": "a"}],
+    "toggle-all-false": [{"key": "A"}],
+    "toggle-all": [{"key": "i"}],
+}
 
 
 def ask_services_to_enable(bp):
     cli_questions = [
         {
             "type": "checkbox",
-            "message": "Select AWS Services to inspect",
+            "message": "Select AWS Services to inspect.",
             "name": "services",
             "choices": [
-                {"name": k, "checked": bool(v["enabled"])} for k, v in bp.items()
+                Choice(service_name, enabled=bool(v["enabled"]))
+                for service_name, v in bp.items()
             ],
         }
     ]
 
-    answers = prompt(questions=cli_questions, style=custom_style_2)
+    answers = prompt(questions=cli_questions, keybindings=prompt_key_bindings)
     for service in bp.keys():
         bp[service]["enabled"] = service in answers["services"]
     return bp
