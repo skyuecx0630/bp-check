@@ -441,15 +441,6 @@
       }
     }
   },
-  "Route53": {
-    "enabled": true,
-    "rules": {
-      "route53-query-logging-enabled": {
-        "enabled": true,
-        "level": 2
-      }
-    }
-  },
   "S3": {
     "enabled": true,
     "rules": {

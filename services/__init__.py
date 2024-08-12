@@ -17,7 +17,6 @@ from . import (
     iam,
     _lambda,
     tags,
-    route53,
     s3,
     secrets_manager,
     security_hub,
