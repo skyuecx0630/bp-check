@@ -15,7 +15,7 @@ def codebuild_project_environment_privileged_check():
     for project in projects:
         project = build_client.batch_get_projects(names=[project])["projects"][0]
 
-        if project["environment"]["privilegedMode"] != True:
+        if not project["environment"]["privilegedMode"]:
             compliant_resources.append(project["arn"])
         else:
             non_compliant_resources.append(project["arn"])
@@ -61,8 +61,8 @@ def codedeploy_auto_rollback_monitor_enabled():
             )["deploymentGroupInfo"]
 
             if (
-                deployment_group["alarmConfiguration"]["enabled"] == True
-                and deployment_group["autoRollbackConfiguration"]["enabled"] == True
+                deployment_group["alarmConfiguration"]["enabled"]
+                and deployment_group["autoRollbackConfiguration"]["enabled"]
             ):
                 compliant_resources.append(deployment_group["deploymentGroupId"])
             else:
