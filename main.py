@@ -1,9 +1,10 @@
+from datetime import datetime
+from concurrent.futures import ThreadPoolExecutor
+
 from InquirerLib import prompt
 from InquirerLib.InquirerPy.utils import InquirerPyKeybindings
 from InquirerLib.InquirerPy.base import Choice
 from colorama import Style, Fore
-from datetime import datetime
-from importlib import import_module
 
 from utils import *
 import services
@@ -36,25 +37,32 @@ def ask_services_to_enable(bp):
 
 
 def perform_bp_rules_check(bp):
-    for service_name, service in bp.items():
-        if not service["enabled"]:
-            continue
-        if service_name == "Lambda":
-            service_name = "_lambda"
+    with ThreadPoolExecutor() as executor:
+        futures = [
+            executor.submit(_rule_check, service_name, service)
+            for service_name, service in bp.items()
+        ]
 
-        now = datetime.now()
-        rule_checker = getattr(
-            services, convert_snake_case(service_name)
-        ).rule_checker()
-
-        for rule_name, rule in service["rules"].items():
-            if not rule["enabled"]:
-                continue
-            rule["result"] = rule_checker.check_rule(convert_snake_case(rule_name))
-
-        elapsed_time = datetime.now() - now
-        print(convert_snake_case(service_name), elapsed_time.total_seconds())
+        [future.result() for future in futures]
     return bp
+
+
+def _rule_check(service_name, service):
+    now = datetime.now()
+
+    if not service["enabled"]:
+        return
+    if service_name == "Lambda":
+        service_name = "_lambda"
+
+    rule_checker = getattr(services, convert_snake_case(service_name)).rule_checker()
+    for rule_name, rule in service["rules"].items():
+        if not rule["enabled"]:
+            continue
+        rule["result"] = rule_checker.check_rule(convert_snake_case(rule_name))
+
+    elapsed_time = datetime.now() - now
+    print(convert_snake_case(service_name), elapsed_time.total_seconds())
 
 
 def show_bp_result(bp):
