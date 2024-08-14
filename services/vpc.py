@@ -67,6 +67,7 @@ class VPCRuleChecker(RuleChecker):
 
     def restricted_common_ports(self):
         common_ports = [
+            -1,  # All
             22,  # SSH
             80,  # HTTP
             3306,  # MySQL
