@@ -3,7 +3,7 @@
     "enabled": true,
     "rules": {
       "ec2-transit-gateway-auto-vpc-attach-disabled": {
-        "enabled": true,
+        "enabled": false,
         "level": 1
       },
       "restricted-ssh": {
@@ -15,7 +15,7 @@
         "level": 2
       },
       "subnet-auto-assign-public-ip-disabled": {
-        "enabled": true,
+        "enabled": false,
         "level": 1
       },
       "vpc-default-security-group-closed": {
@@ -27,11 +27,11 @@
         "level": 2
       },
       "vpc-network-acl-unused-check": {
-        "enabled": true,
+        "enabled": false,
         "level": 2
       },
       "vpc-peering-dns-resolution-check": {
-        "enabled": true,
+        "enabled": false,
         "level": 2
       },
       "vpc-sg-open-only-to-authorized-ports": {
@@ -73,7 +73,7 @@
     "enabled": true,
     "rules": {
       "alb-http-drop-invalid-header-enabled": {
-        "enabled": true,
+        "enabled": false,
         "level": 2
       },
       "alb-waf-enabled": {
@@ -81,7 +81,7 @@
         "level": 2
       },
       "elb-cross-zone-load-balancing-enabled": {
-        "enabled": true,
+        "enabled": false,
         "level": 2
       },
       "elb-deletion-protection-enabled": {
@@ -139,11 +139,11 @@
         "level": 2
       },
       "ec2-instance-managed-by-systems-manager": {
-        "enabled": true,
+        "enabled": false,
         "level": 2
       },
       "ec2-instance-profile-attached": {
-        "enabled": true,
+        "enabled": false,
         "level": 2
       },
       "ec2-no-amazon-key-pair": {
@@ -189,7 +189,7 @@
         "level": 2
       },
       "ecs-containers-readonly-access": {
-        "enabled": true,
+        "enabled": false,
         "level": 2
       },
       "ecs-container-insights-enabled": {
@@ -197,7 +197,7 @@
         "level": 2
       },
       "ecs-fargate-latest-platform-version": {
-        "enabled": true,
+        "enabled": false,
         "level": 2
       },
       "ecs-task-definition-log-configuration": {
@@ -205,11 +205,11 @@
         "level": 2
       },
       "ecs-task-definition-memory-hard-limit": {
-        "enabled": true,
+        "enabled": false,
         "level": 1
       },
       "ecs-task-definition-nonroot-user": {
-        "enabled": true,
+        "enabled": false,
         "level": 1
       }
     }
@@ -256,11 +256,11 @@
     "enabled": true,
     "rules": {
       "s3-access-point-in-vpc-only": {
-        "enabled": true,
+        "enabled": false,
         "level": 1
       },
       "s3-bucket-default-lock-enabled": {
-        "enabled": true,
+        "enabled": false,
         "level": 1
       },
       "s3-bucket-level-public-access-prohibited": {
@@ -284,11 +284,11 @@
         "level": 2
       },
       "s3-event-notifications-enabled": {
-        "enabled": true,
+        "enabled": false,
         "level": 1
       },
       "s3-last-backup-recovery-point-created": {
-        "enabled": true,
+        "enabled": false,
         "level": 1
       },
       "s3-lifecycle-policy-check": {
@@ -353,7 +353,7 @@
         "level": 2
       },
       "rds-snapshot-encrypted": {
-        "enabled": true,
+        "enabled": false,
         "level": 2
       }
     }
@@ -382,7 +382,7 @@
         "level": 2
       },
       "elasticache-subnet-group-check": {
-        "enabled": true,
+        "enabled": false,
         "level": 2
       }
     }
@@ -436,7 +436,7 @@
         "level": 2
       },
       "efs-mount-target-public-accessible": {
-        "enabled": true,
+        "enabled": false,
         "level": 2
       }
     }
@@ -445,11 +445,11 @@
     "enabled": true,
     "rules": {
       "lambda-dlq-check": {
-        "enabled": true,
+        "enabled": false,
         "level": 1
       },
       "lambda-function-public-access-prohibited": {
-        "enabled": true,
+        "enabled": false,
         "level": 2
       },
       "lambda-function-settings-check": {
@@ -457,7 +457,7 @@
         "level": 2
       },
       "lambda-inside-vpc": {
-        "enabled": true,
+        "enabled": false,
         "level": 1
       }
     }
@@ -470,7 +470,7 @@
         "level": 2
       },
       "cloudwatch-alarm-settings-check": {
-        "enabled": true,
+        "enabled": false,
         "level": 2
       }
     }
@@ -523,7 +523,7 @@
     }
   },
   "IAM": {
-    "enabled": true,
+    "enabled": false,
     "rules": {
       "iam-policy-no-statements-with-admin-access": {
         "enabled": true,

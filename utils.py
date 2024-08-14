@@ -2,7 +2,10 @@ import json
 import shutil
 
 
-def load_bp_from_file(filepath="bp.json"):
+def load_bp_from_file(filepath="bp.json", default_ruleset=None):
+    if default_ruleset:
+        shutil.copy(default_ruleset, filepath)
+
     try:
         with open(filepath, "r") as f:
             content = "".join(f.readlines())
@@ -34,6 +37,21 @@ def convert_bp_to_snake_case(bp):
             for rule_name, rule in v["rules"].items()
         }
     return bp
+
+
+def parse_excluded_resources():
+    with open("exclude.csv", "r") as f:
+        content = f.readlines()
+
+    excluded_resources = {}
+    for line in content:
+        if "," in line:
+            resource, scope = line.strip().split(",")
+        else:
+            resource = line
+            scope = "all"
+        excluded_resources[resource] = scope
+    return excluded_resources
 
 
 if __name__ == "__main__":
