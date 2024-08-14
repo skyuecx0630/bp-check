@@ -9,7 +9,7 @@ class CloudFrontRuleChecker(RuleChecker):
 
     @cached_property
     def distributions(self):
-        return self.client.list_distributions()["DistributionList"]["Items"]
+        return self.client.list_distributions()["DistributionList"].get("Items", [])
 
     @cached_property
     def distribution_details(self):

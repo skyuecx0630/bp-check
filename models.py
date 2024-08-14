@@ -15,4 +15,15 @@ class RuleChecker:
 
     def check_rule(self, rule_name) -> RuleCheckResult:
         check_func = getattr(self, convert_snake_case(rule_name))
-        return check_func()
+        try:
+            result = check_func()
+        except Exception as e:
+            result = RuleCheckResult(
+                passed=False,
+                compliant_resources=[],
+                non_compliant_resources=[
+                    "Rule check failed due to folling errors: ",
+                    str(e),
+                ],
+            )
+        return result

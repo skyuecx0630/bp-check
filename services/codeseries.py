@@ -11,6 +11,8 @@ class CodeSeriesChecker(RuleChecker):
     @cached_property
     def projects(self):
         project_names = self.build_client.list_projects()["projects"]
+        if not project_names:
+            return []
         return self.build_client.batch_get_projects(names=project_names)["projects"]
 
     def codebuild_project_environment_privileged_check(self):
@@ -59,6 +61,10 @@ class CodeSeriesChecker(RuleChecker):
             deployment_group_names = self.deploy_client.list_deployment_groups(
                 applicationName=application
             )["deploymentGroups"]
+
+            if not deployment_group_names:
+                continue
+
             deployment_groups = self.deploy_client.batch_get_deployment_groups(
                 applicationName=application, deploymentGroupNames=deployment_group_names
             )["deploymentGroupsInfo"]
