@@ -2,6 +2,8 @@ from InquirerLib import prompt
 from InquirerLib.InquirerPy.utils import InquirerPyKeybindings
 from InquirerLib.InquirerPy.base import Choice
 from colorama import Style, Fore
+from datetime import datetime
+from importlib import import_module
 
 from utils import *
 import services
@@ -40,12 +42,18 @@ def perform_bp_rules_check(bp):
         if service_name == "Lambda":
             service_name = "_lambda"
 
-        module = getattr(services, convert_snake_case(service_name))
+        now = datetime.now()
+        rule_checker = getattr(
+            services, convert_snake_case(service_name)
+        ).rule_checker()
+
         for rule_name, rule in service["rules"].items():
             if not rule["enabled"]:
                 continue
+            rule["result"] = rule_checker.check_rule(convert_snake_case(rule_name))
 
-            rule["result"] = getattr(module, convert_snake_case(rule_name))()
+        elapsed_time = datetime.now() - now
+        print(convert_snake_case(service_name), elapsed_time.total_seconds())
     return bp
 
 

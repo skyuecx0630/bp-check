@@ -16,7 +16,6 @@ from . import (
     elasticache,
     iam,
     _lambda,
-    tags,
     s3,
     secrets_manager,
     security_hub,

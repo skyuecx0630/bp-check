@@ -1,75 +1,85 @@
-from models import RuleCheckResult
+from models import RuleCheckResult, RuleChecker
+from functools import cached_property
 import boto3
 
 
-build_client = boto3.client("codebuild")
+class CodeSeriesChecker(RuleChecker):
+    def __init__(self):
+        self.build_client = boto3.client("codebuild")
+        self.deploy_client = boto3.client("codedeploy")
 
-deploy_client = boto3.client("codedeploy")
+    @cached_property
+    def projects(self):
+        project_names = self.build_client.list_projects()["projects"]
+        return self.build_client.batch_get_projects(names=project_names)["projects"]
 
+    def codebuild_project_environment_privileged_check(self):
+        compliant_resources = []
+        non_compliant_resources = []
 
-def codebuild_project_environment_privileged_check():
-    compliant_resources = []
-    non_compliant_resources = []
-    projects = build_client.list_projects()["projects"]
+        for project in self.projects:
+            if not project["environment"]["privilegedMode"]:
+                compliant_resources.append(project["arn"])
+            else:
+                non_compliant_resources.append(project["arn"])
 
-    for project in projects:
-        project = build_client.batch_get_projects(names=[project])["projects"][0]
+        return RuleCheckResult(
+            passed=not non_compliant_resources,
+            compliant_resources=compliant_resources,
+            non_compliant_resources=non_compliant_resources,
+        )
 
-        if not project["environment"]["privilegedMode"]:
-            compliant_resources.append(project["arn"])
-        else:
-            non_compliant_resources.append(project["arn"])
+    def codebuild_project_logging_enabled(self):
+        compliant_resources = []
+        non_compliant_resources = []
 
-    return RuleCheckResult(
-        passed=not non_compliant_resources,
-        compliant_resources=compliant_resources,
-        non_compliant_resources=non_compliant_resources,
-    )
-
-
-def codebuild_project_logging_enabled():
-    compliant_resources = []
-    non_compliant_resources = []
-    projects = build_client.list_projects()["projects"]
-
-    for project in projects:
-        project = build_client.batch_get_projects(names=[project])["projects"][0]
-        logs_config = project["logsConfig"]
-
-        if logs_config["cloudWatchLogs"]["status"] == "ENABLED" or logs_config["s3Logs"]["status"] == "ENABLED":
-            compliant_resources.append(project["arn"])
-        else:
-            non_compliant_resources.append(project["arn"])
-
-    return RuleCheckResult(
-        passed=not non_compliant_resources,
-        compliant_resources=compliant_resources,
-        non_compliant_resources=non_compliant_resources,
-    )
-
-
-def codedeploy_auto_rollback_monitor_enabled():
-    compliant_resources = []
-    non_compliant_resources = []
-    applications = deploy_client.list_applications()["applications"]
-
-    for application in applications:
-        deployment_groups = deploy_client.list_deployment_groups(applicationName=application)["deploymentGroups"]
-        for deployment_group in deployment_groups:
-            deployment_group = deploy_client.get_deployment_group(
-                applicationName=application, deploymentGroupName=deployment_group
-            )["deploymentGroupInfo"]
+        for project in self.projects:
+            logs_config = project["logsConfig"]
 
             if (
-                deployment_group["alarmConfiguration"]["enabled"]
-                and deployment_group["autoRollbackConfiguration"]["enabled"]
+                logs_config["cloudWatchLogs"]["status"] == "ENABLED"
+                or logs_config["s3Logs"]["status"] == "ENABLED"
             ):
-                compliant_resources.append(deployment_group["deploymentGroupId"])
+                compliant_resources.append(project["arn"])
             else:
-                non_compliant_resources.append(deployment_group["deploymentGroupId"])
+                non_compliant_resources.append(project["arn"])
 
-    return RuleCheckResult(
-        passed=not non_compliant_resources,
-        compliant_resources=compliant_resources,
-        non_compliant_resources=non_compliant_resources,
-    )
+        return RuleCheckResult(
+            passed=not non_compliant_resources,
+            compliant_resources=compliant_resources,
+            non_compliant_resources=non_compliant_resources,
+        )
+
+    def codedeploy_auto_rollback_monitor_enabled(self):
+        compliant_resources = []
+        non_compliant_resources = []
+
+        applications = self.deploy_client.list_applications()["applications"]
+        for application in applications:
+            deployment_group_names = self.deploy_client.list_deployment_groups(
+                applicationName=application
+            )["deploymentGroups"]
+            deployment_groups = self.deploy_client.batch_get_deployment_groups(
+                applicationName=application, deploymentGroupNames=deployment_group_names
+            )["deploymentGroupsInfo"]
+
+            for deployment_group in deployment_groups:
+
+                if (
+                    deployment_group["alarmConfiguration"]["enabled"]
+                    and deployment_group["autoRollbackConfiguration"]["enabled"]
+                ):
+                    compliant_resources.append(deployment_group["deploymentGroupId"])
+                else:
+                    non_compliant_resources.append(
+                        deployment_group["deploymentGroupId"]
+                    )
+
+        return RuleCheckResult(
+            passed=not non_compliant_resources,
+            compliant_resources=compliant_resources,
+            non_compliant_resources=non_compliant_resources,
+        )
+
+
+rule_checker = CodeSeriesChecker
