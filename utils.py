@@ -48,7 +48,7 @@ def parse_excluded_resources():
         if "," in line:
             resource, scope = line.strip().split(",")
         else:
-            resource = line
+            resource = line.strip()
             scope = "all"
         excluded_resources[resource] = scope
     return excluded_resources
